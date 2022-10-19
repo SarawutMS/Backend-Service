@@ -1,0 +1,27 @@
+img แยกสเกล
+
+
+ /Folder   .file
+
+	Folder customer or admin0  id_name/
+
+		[
+		
+
+		Count of customer shirt.  count/
+
+
+			[
+
+
+				PngFile.
+
+				PopertyFile.
+ 						
+				Compoment/  [
+
+					svg ALL. 		
+			
+						]
+
+			]
