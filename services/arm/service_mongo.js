@@ -4,7 +4,7 @@ const multer = require('multer');
 var fs = require('fs');
 const mongoose = require('mongoose');
 //var ObjectID = require('mongoose').ObjectID;
-var url = "mongodb://localhost:27017/arm_db";
+var url = "mongodb://localhost:27017/Database";
 var uploads = multer()
 
 service.post('/upload', uploads.single('fileupload'), (req, res) => {
@@ -121,7 +121,7 @@ service.post('/register', register.none(), (req, res) => {
         };
         db.collection("users").find({}).toArray(function (err, result) {
             if (err) throw err;
-            let check = false;
+            let check = false; /// Check Email in data 
             for (i in result) {
                 if (result[i].email == email) {
                     check = true;
@@ -142,7 +142,7 @@ service.post('/register', register.none(), (req, res) => {
 
     });
 });
-
+http://localhost:3000/services/arm_service/register
 
 var login = multer()
 service.post('/login', login.none(), (req, res, next) => {
@@ -167,5 +167,72 @@ service.post('/login', login.none(), (req, res, next) => {
     });
 });
 
+var create = multer()
+service.post('/create_shirt', create.none(), (req, res, next) => {
+    res.send(req.body)
 
+
+
+
+    mongoose.connect(url, (err, db) => {
+        if (err) throw err;
+        let id = "";
+        console.log(req.body.email);
+        db.collection("users").find({ email: req.body.email }).toArray((err, result) => {
+            if (err) throw err;
+
+            for (i in result) {
+                id = result[i]._id;
+            }
+
+
+
+
+
+
+            var myobj = {
+
+                nameshirt_: req.body.nameshirt_,
+                shirt_object: "",
+                detail: req.body.detail,
+                users_id: id,
+                permission: req.body.permission,
+            }
+            db.collection('shirt').insertOne(myobj, function (err, result) {
+                if (err) throw err;
+                console.log(result);
+
+                db.close();
+            });
+
+
+        })
+
+
+
+
+    });
+});
+
+
+
+
+service.get('/shirts', (req, res, next) => {
+
+
+    mongoose.connect(url, (err, db) => {
+
+        let data = [];
+
+        db.collection("shirt").find({permission: 'true'}).toArray((err, result) => {
+            if (err) throw err;
+
+            res.send(result);
+
+        });
+
+
+    });
+
+});
 module.exports = service;
